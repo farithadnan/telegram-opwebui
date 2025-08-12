@@ -1,0 +1,7 @@
+include *.py
+include *.md
+include *.toml
+global-exclude config/
+global-exclude logs/
+global-exclude .*
+global-exclude *.log

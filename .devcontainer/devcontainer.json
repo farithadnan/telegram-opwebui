@@ -1,0 +1,25 @@
+{
+  "name": "Telebot OpenWebUI",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "telebot-opwebui-service",
+  "workspaceFolder": "/app",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.linting.enabled": true,
+        "python.linting.pylintEnabled": true,
+        "python.formatting.provider": "black"
+      },
+      "extensions": [
+        "ms-python.python",
+        "ms-python.pylint",
+        "ms-python.vscode-pylance",
+        "github.copilot"
+      ]
+    }
+  },
+  "forwardPorts": [8080],
+  "postCreateCommand": "pip install uv && python -m venv /home/app/venv && /home/app/venv/bin/pip install -e .",
+  "remoteUser": "app"
+}
