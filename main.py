@@ -7,7 +7,6 @@ import asyncio
 import logging
 
 from pathlib import Path
-from tkinter import W
 
 import requests
 from dotenv import load_dotenv
@@ -41,6 +40,25 @@ OPWEBUI_COLLECTION_ID = os.getenv('OPWEBUI_COLLECTION_ID')
 # Configurable message
 WELCOME_MESSAGE = os.getenv('WELCOME_MESSAGE')
 SYSTEM_PROMPT = os.getenv('SYSTEM_PROMPT')
+
+# Validate required environment variables
+missing_vars = []
+if not TELEGRAM_BOT_TOKEN:
+    missing_vars.append('TELEGRAM_BOT_TOKEN')
+if not OPWEBUI_CHAT_ENDPOINT:
+    missing_vars.append('OPWEBUI_CHAT_ENDPOINT')
+if not OPWEBUI_JWT_TOKEN:
+    missing_vars.append('OPWEBUI_JWT_TOKEN')
+if not OPWEBUI_MODEL:
+    missing_vars.append('OPWEBUI_MODEL')
+if not WELCOME_MESSAGE:
+    missing_vars.append('WELCOME_MESSAGE')
+if not SYSTEM_PROMPT:
+    missing_vars.append('SYSTEM_PROMPT')
+
+if missing_vars:
+    logger.error("Missing required environment variables: %s", ", ".join(missing_vars))
+    exit(1)
 
 bot = AsyncTeleBot(TELEGRAM_BOT_TOKEN)
 
@@ -214,6 +232,12 @@ async def process_with_llm(query: str,  user_id: int = None, chat_id: int = None
             llm_response = choice['message']['content']
         elif 'text' in choice:
             llm_response = choice['text']
+    else:
+        logger.warning(
+            "Unexpected response format from OpenWebUI: %s", 
+            response_json
+        )
+        return "Error: Unexpected response format from AI service."
 
     logger.debug(
         "Extracted LLM response for user %s: %s%s",
@@ -224,13 +248,22 @@ async def process_with_llm(query: str,  user_id: int = None, chat_id: int = None
 
     return llm_response
 
-
-def main():
+async def main():
     """
     Main entry point for the application.
     """
     logger.info("Starting Telebot-OpenWebUI")
-    asyncio.run(bot.polling())
+    try:
+        await bot.polling()
+    except Exception as e:
+        logger.error("Bot polling failed with error: %s", e)
+        raise
 
 if __name__ == "__main__":
-    main()
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        logger.info("Bot stopped by user")
+    except (RuntimeError, asyncio.CancelledError) as e:
+        logger.error("Application crashed: %s", e)
+        exit(1)
