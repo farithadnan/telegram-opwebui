@@ -1,0 +1,58 @@
+# Ignore development files
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.git/
+.mypy_cache/
+.pytest_cache/
+.hypothesis/
+
+# Ignore OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Ignore IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Ignore sensitive files
+secrets/.env
+secrets/gcp_service_credentials.json
+secrets/contacts.json
+
+# Ignore logs and temporary files
+*.log
+logs/
+tmp/
+temp/
+
+# Ignore node modules if any
+node_modules/
+
+# Ignore build artifacts
+build/
+dist/
+*.egg-info/

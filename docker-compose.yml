@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  telebot-opwebui-service:
+    build: .
+    container_name: telebot-opwebui
+    network_mode: "host"
+    env_file:
+      - ./config/.env
+    volumes:
+      - .:/app
+      - ./logs:/app/logs
+      - ./config:/app/config
+    restart: unless-stopped
+    environment:
+      - PYTHONUNBUFFERED=1

@@ -1,0 +1,19 @@
+[project]
+name = "telebot-opwebui"
+version = "0.1.0"
+description = "A Telegram bot integrated with OpenWebUI for AI-powered conversations"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pytelegrambotapi>=4.28.0",
+    "python-dotenv>=1.1.1",
+]
+
+
+[tool.setuptools]
+packages = {find = {}}
+package-dir = {"" = "."}
+include-package-data = false
+
+[tool.setuptools.package-data]
+"*" = ["README.md"]
