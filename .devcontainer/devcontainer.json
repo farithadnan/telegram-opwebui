@@ -20,6 +20,5 @@
     }
   },
   "forwardPorts": [8080],
-  "postCreateCommand": "pip install uv && python -m venv /home/app/venv && /home/app/venv/bin/pip install -e .",
   "remoteUser": "app"
 }
