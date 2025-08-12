@@ -7,6 +7,7 @@ import asyncio
 import logging
 
 from pathlib import Path
+from tkinter import W
 
 import requests
 from dotenv import load_dotenv
@@ -52,7 +53,18 @@ async def send_welcome(message):
         message.from_user.id,
         message.chat.id
     )
-    await bot.reply_to(message, WELCOME_MESSAGE)
+
+    help_text = f"""
+        {WELCOME_MESSAGE}
+
+        Available commands:
+        /start - Start the bot
+        /help - Show this help message
+
+        Just send me any question and I'll answer it using {OPWEBUI_MODEL} model!
+    """
+
+    await bot.reply_to(message, help_text)
 
 # Handle all other messages with content_type 'text' (content_types defaults to ['text'])
 @bot.message_handler(func=lambda message: True)
