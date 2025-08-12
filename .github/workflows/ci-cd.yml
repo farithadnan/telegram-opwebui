@@ -2,10 +2,10 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, master ]
     tags: [ 'v*.*.*' ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, master ]
   workflow_dispatch:
 
 env:
@@ -30,7 +30,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          uv pip install pytelegrambotapi python-dotenv
+          uv pip install --system pytelegrambotapi python-dotenv
 
       - name: Run linting
         run: |
