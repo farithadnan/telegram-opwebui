@@ -21,19 +21,25 @@ COPY pyproject.toml README.md ./
 # Install dependencies using uv (just the dependencies, not the package itself)
 RUN uv pip install --system --no-cache-dir pytelegrambotapi python-dotenv
 
-# Create non-root user
-RUN useradd --create-home --shell /bin/bash app && \
-    chown -R app:app /app
-USER app
+# Create non-root user with proper home directory
+RUN useradd --create-home --shell /bin/bash --home-dir /home/app app && \
+    chown -R app:app /app && \
+    chmod g+rw /app && \
+    mkdir -p /home/app && \
+    chown -R app:app /home/app
 
 # Copy application code after setting up dependencies
 COPY main.py ./
 
 # Create necessary directories
-RUN mkdir -p config logs
+RUN mkdir -p config logs && \
+    chown -R app:app config logs
 
 # Expose port for health checks and webhooks
 EXPOSE 8080
+
+# Switch to the app user
+USER app
 
 # Run the application
 CMD ["python", "main.py"]
