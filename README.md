@@ -13,6 +13,7 @@ A Telegram bot integrated with OpenWebUI for AI-powered conversations. This proj
   - [Method 3: Using Dev Container (VS Code)](#method-3-using-dev-container-vs-code)
     - [Rebuilding Containers](#rebuilding-containers)
     - [Switching Between Environments](#switching-between-environments)
+  - [Method 4: Using GitHub Container Registry Image](#method-4-using-github-container-registry-image)
 - [Project Documentation](#project-documentation)
 
 ## Prerequisites
@@ -167,6 +168,78 @@ To switch back from the dev container to your local folder:
 3. Select "**Reopen Folder Locally**" from the options
 
 This will switch you back to working on the project with your local environment instead of the container.
+
+
+### Method 4: Using GitHub Container Registry Image
+
+If you have GitHub Actions set up, a Docker image is automatically built and pushed to GitHub Container Registry (GHCR). You can run this image directly without cloning the entire repository.
+
+
+#### Option 1: Using a local configuration file
+
+
+1. Create a directory for your configuration:
+   ```bash
+   mkdir telebot-opwebui-config
+   cd telebot-opwebui-config
+   ```
+2. Create a `.env` file with your configuration:
+
+    ```bash
+    # Create .env file with your settings
+    cat > .env << EOF
+    # Telegram Bot Configuration
+    TELEGRAM_BOT_TOKEN=your_telegram_bot_token_here
+
+    # OpenWebUI Configuration
+    OPWEBUI_CHAT_ENDPOINT=http://localhost:3000/ollama/api/chat
+    OPWEBUI_JWT_TOKEN=your_openwebui_jwt_token_here
+    OPWEBUI_MODEL=llama3:8b
+    OPWEBUI_COLLECTION_ID=your_collection_id_here
+
+    # Custom Messages
+    WELCOME_MESSAGE=Welcome to the AI Telegram Bot! Send me any question and I'll answer it.
+    SYSTEM_PROMPT=You are a helpful AI assistant.
+    EOF
+    ```
+
+3. Run the Docker container:
+
+    ```bash
+    docker run -d \
+    --name telebot-opwebui \
+    --network host \
+    -v ./logs:/app/logs \
+    --env-file ./.env \
+    ghcr.io/your-github-username/your-repo-name:main
+    ```
+
+#### Option 2: Passing environment variables directly
+
+
+Alternatively, you can pass environment variables directly:
+
+```bash
+docker run -d \
+  --name telebot-opwebui \
+  --network host \
+  -v ./logs:/app/logs \
+  -e TELEGRAM_BOT_TOKEN=your_telegram_bot_token \
+  -e OPWEBUI_CHAT_ENDPOINT=http://localhost:3000/ollama/api/chat \
+  -e OPWEBUI_JWT_TOKEN=your_openwebui_jwt_token \
+  -e OPWEBUI_MODEL=llama3:8b \
+  -e OPWEBUI_COLLECTION_ID=your_collection_id \
+  -e WELCOME_MESSAGE="Welcome to the AI Telegram Bot! Send me any question and I'll answer it." \
+  -e SYSTEM_PROMPT="You are a helpful AI assistant." \
+  ghcr.io/your-github-username/your-repo-name:main
+```
+
+**Important:** When using the GitHub Container Registry image, make sure to:
+
+1. Replace `your-github-username` and `your-repo-name` with your actual GitHub username and repository name
+2. Ensure all required environment variables are provided either through the `--env-file` option or individual `-e` flags
+3. You do not need to clone the repository to use the Docker image - just create your configuration locally.
+4. The `-v ./logs:/app/logs` option will create a logs directory in your current folder to store application logs
 
 ---
 
