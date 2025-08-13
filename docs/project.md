@@ -19,6 +19,9 @@ Telebot-OpenWebUI is a Python-based project that integrates a Telegram bot with 
 - [Libraries and Dependencies](#libraries-and-dependencies)
   - [Core Libraries](#core-libraries)
   - [Development and Deployment Tools](#development-and-deployment-tools)
+- [Project Configuration and Deployment](#project-configuration-and-deployment)
+    - [Docker Configuration](#docker-configuration)
+    - [Python Project Configuration](#python-project-configuration)
 - [Project Structure](#project-structure)
 - [Setup Guide](#setup-guide)
 
