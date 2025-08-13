@@ -2,6 +2,16 @@
 
 A Telegram bot integrated with OpenWebUI for AI-powered conversations. This project serves as a bridge between Telegram users and an OpenWebUI-powered AI service, allowing users to interact with an AI language model through Telegram messaging.
 
+> ⚠️ **IMPORTANT NOTE ABOUT VIRTUAL ENVIRONMENTS**
+> 
+> **This project requires a Python virtual environment to run properly.** 
+> You **will NOT be able to run the project locally** (either `main.py` or `test_runner.py`) without setting up the virtual environment first.
+>
+> Always activate the virtual environment before running any commands.
+>
+> Refer to the [Method 2: Local Development with UV](#method-2-local-development-with-uv) section for more details.
+
+
 ## Table of Contents
 
 - [Prerequisites](#prerequisites)
@@ -103,6 +113,10 @@ docker-compose down
 ### Method 2: Local Development with UV
 
 For local development without containers:
+
+> ⚠️ **CRITICAL STEP**
+>
+> You **MUST** activate the virtual environment before proceeding! Failure to do so will result in import errors and dependency issues.
 
 1. Create a virtual environment using uv:
 
