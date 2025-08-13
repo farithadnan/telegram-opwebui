@@ -124,6 +124,15 @@ async def handle_message(message):
             e
         )
         await bot.reply_to(message, "Sorry, something went wrong. Please try again later.")
+    except Exception as e:
+        processing_time = time.time() - start_time
+        logger.error(
+            "Unexpected error processing message from user %s after %.2fs: %s", 
+            user_id,
+            processing_time,
+            e
+        )
+        await bot.reply_to(message, "Sorry, something went wrong. Please try again later.")
 
 async def process_with_llm(query: str,  user_id: int = None, chat_id: int = None) -> str:
     """Process a query using the LLM"""
