@@ -39,7 +39,6 @@ OPWEBUI_COLLECTION_ID = os.getenv('OPWEBUI_COLLECTION_ID')
 
 # Configurable message
 WELCOME_MESSAGE = os.getenv('WELCOME_MESSAGE')
-SYSTEM_PROMPT = os.getenv('SYSTEM_PROMPT')
 
 # Validate required environment variables
 missing_vars = []
@@ -53,8 +52,6 @@ if not OPWEBUI_MODEL:
     missing_vars.append('OPWEBUI_MODEL')
 if not WELCOME_MESSAGE:
     missing_vars.append('WELCOME_MESSAGE')
-if not SYSTEM_PROMPT:
-    missing_vars.append('SYSTEM_PROMPT')
 
 if missing_vars:
     logger.error("Missing required environment variables: %s", ", ".join(missing_vars))
@@ -72,17 +69,7 @@ async def send_welcome(message):
         message.chat.id
     )
 
-    help_text = f"""
-        {WELCOME_MESSAGE}
-
-        Available commands:
-        /start - Start the bot
-        /help - Show this help message
-
-        Just send me any question and I'll answer it using {OPWEBUI_MODEL} model!
-    """
-
-    await bot.reply_to(message, help_text)
+    await bot.reply_to(message, WELCOME_MESSAGE)
 
 # Handle all other messages with content_type 'text' (content_types defaults to ['text'])
 @bot.message_handler(func=lambda message: True)
@@ -162,7 +149,6 @@ async def process_with_llm(query: str,  user_id: int = None, chat_id: int = None
                 "model": OPWEBUI_MODEL,
                 "stream": False,
                 "messages": [
-                    {"role": "system", "content": SYSTEM_PROMPT},
                     {"role": "user", "content": query}
                 ],
                 "files": [

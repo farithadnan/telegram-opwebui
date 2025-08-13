@@ -66,10 +66,9 @@ The application depends on several environment variables:
 - `TELEGRAM_BOT_TOKEN`: The token for authenticating with Telegram's Bot API
 - `OPWEBUI_CHAT_ENDPOINT`: The endpoint URL for the OpenWebUI chat API
 - `OPWEBUI_JWT_TOKEN`: JWT token for authenticating with the OpenWebUI API
-- `OPWEBUI_MODEL`: The specific model to use with OpenWebUI
-- `OPWEBUI_COLLECTION_ID`: The collection ID for context-specific information
+- `OPWEBUI_MODEL`: The specific model to use with OpenWebUI whether using a local model or a remote model or a custom model you created with OpenWebUI
+- `OPWEBUI_COLLECTION_ID`: The collection ID for context-specific information or knowledge you created in OpenWebUI
 - `WELCOME_MESSAGE`: Customizable welcome message for new users
-- `SYSTEM_PROMPT`: System prompt that guides the AI's behavior
 
 #### Bot Command Handlers
 
@@ -185,7 +184,6 @@ async def process_with_llm(query: str, user_id: int = None, chat_id: int = None)
                 "model": OPWEBUI_MODEL,
                 "stream": False,
                 "messages": [
-                    {"role": "system", "content": SYSTEM_PROMPT},
                     {"role": "user", "content": query}
                 ],
                 "files": [

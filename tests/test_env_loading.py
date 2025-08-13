@@ -18,7 +18,6 @@ def test_env_variables_present():
         'OPWEBUI_JWT_TOKEN': 'test_jwt',
         'OPWEBUI_MODEL': 'test_model',
         'WELCOME_MESSAGE': 'Welcome!',
-        'SYSTEM_PROMPT': 'Test prompt'
     }):
         # Remove main from sys.modules if it exists to force re-import
         for module_name in list(sys.modules.keys()):
@@ -33,7 +32,6 @@ def test_env_variables_present():
         assert main.OPWEBUI_JWT_TOKEN == 'test_jwt'
         assert main.OPWEBUI_MODEL == 'test_model'
         assert main.WELCOME_MESSAGE == 'Welcome!'
-        assert main.SYSTEM_PROMPT == 'Test prompt'
 
 
 def test_missing_env_variables():

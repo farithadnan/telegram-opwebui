@@ -60,7 +60,6 @@ OPWEBUI_COLLECTION_ID=your_collection_id_here
 
 # Custom Messages
 WELCOME_MESSAGE=Welcome to the AI Telegram Bot! Send me any question and I'll answer it.
-SYSTEM_PROMPT=You are a helpful AI assistant.
 ```
 
 Make sure to replace the placeholder values with your actual configuration:
@@ -68,10 +67,8 @@ Make sure to replace the placeholder values with your actual configuration:
 - `TELEGRAM_BOT_TOKEN`: Get this from @BotFather on Telegram
 - `OPWEBUI_CHAT_ENDPOINT`: The chat endpoint of your OpenWebUI instance
 - `OPWEBUI_JWT_TOKEN`: JWT token from your OpenWebUI instance
-- `OPWEBUI_MODEL`: The default model you want to use in OpenWebUI
-- `OPWEBUI_COLLECTION_ID`: (Optional) Collection ID for context-specific information
-
-**Note**: The `/model` command allows you to switch between different models available in your OpenWebUI instance. Collection-based models will automatically update the `OPWEBUI_COLLECTION_ID` when selected.
+- `OPWEBUI_MODEL`: The default model you want to use in OpenWebUI whether external or custom model you created in OpenWebUI
+- `OPWEBUI_COLLECTION_ID`: (Optional) Collection ID for context-specific information or knowledge you created on OpenWebUI
 
 
 ## Running the Project
@@ -206,7 +203,6 @@ If you have GitHub Actions set up, a Docker image is automatically built and pus
 
     # Custom Messages
     WELCOME_MESSAGE=Welcome to the AI Telegram Bot! Send me any question and I'll answer it.
-    SYSTEM_PROMPT=You are a helpful AI assistant.
     EOF
     ```
 
@@ -237,7 +233,6 @@ docker run -d \
   -e OPWEBUI_MODEL=llama3:8b \
   -e OPWEBUI_COLLECTION_ID=your_collection_id \
   -e WELCOME_MESSAGE="Welcome to the AI Telegram Bot! Send me any question and I'll answer it." \
-  -e SYSTEM_PROMPT="You are a helpful AI assistant." \
   ghcr.io/your-github-username/your-repo-name:main
 ```
 

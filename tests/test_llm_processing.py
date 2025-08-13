@@ -48,7 +48,6 @@ def mock_env_vars():
         'OPWEBUI_MODEL': 'test_model',
         'OPWEBUI_COLLECTION_ID': 'test_collection',
         'WELCOME_MESSAGE': 'Welcome!',
-        'SYSTEM_PROMPT': 'Test prompt'
     })
 
 
