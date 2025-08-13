@@ -68,7 +68,11 @@ Make sure to replace the placeholder values with your actual configuration:
 - `TELEGRAM_BOT_TOKEN`: Get this from @BotFather on Telegram
 - `OPWEBUI_CHAT_ENDPOINT`: The chat endpoint of your OpenWebUI instance
 - `OPWEBUI_JWT_TOKEN`: JWT token from your OpenWebUI instance
-- `OPWEBUI_MODEL`: The model you want to use in OpenWebUI
+- `OPWEBUI_MODEL`: The default model you want to use in OpenWebUI
+- `OPWEBUI_COLLECTION_ID`: (Optional) Collection ID for context-specific information
+
+**Note**: The `/model` command allows you to switch between different models available in your OpenWebUI instance. Collection-based models will automatically update the `OPWEBUI_COLLECTION_ID` when selected.
+
 
 ## Running the Project
 
