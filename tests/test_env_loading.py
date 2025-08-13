@@ -30,7 +30,7 @@ def test_env_variables_present():
         assert main.TELEGRAM_BOT_TOKEN == '123456789:ABCdefGHIjklMNOpqrSTUvwxYZ'
         assert main.OPWEBUI_CHAT_ENDPOINT == 'http://test.example.com'
         assert main.OPWEBUI_JWT_TOKEN == 'test_jwt'
-        assert main.OPWEBUI_MODEL != 'test_model'
+        assert main.OPWEBUI_MODEL == 'test_model'
         assert main.WELCOME_MESSAGE == 'Welcome!'
 
 
