@@ -12,6 +12,10 @@ Telebot-OpenWebUI is a Python-based project that integrates a Telegram bot with 
     - [Bot Command Handlers](#bot-command-handlers)
     - [LLM Processing Function](#llm-processing-function)
     - [Application Entry Point](#application-entry-point)
+- [Testing](#testing)
+  - [Test Suite Structure](#test-suite-structure)
+  - [Test Runner](#test-runner)
+  - [Running Tests](#running-tests)
 - [Libraries and Dependencies](#libraries-and-dependencies)
   - [Core Libraries](#core-libraries)
   - [Development and Deployment Tools](#development-and-deployment-tools)
@@ -124,6 +128,15 @@ async def handle_message(message):
             e
         )
         await bot.reply_to(message, "Sorry, something went wrong. Please try again later.")
+    except Exception as e:
+        processing_time = time.time() - start_time
+        logger.error(
+            "Unexpected error processing message from user %s after %.2fs: %s", 
+            user_id,
+            processing_time,
+            e
+        )
+        await bot.reply_to(message, "Sorry, something went wrong. Please try again later.")
 ```
 
 This handler processes all text messages (except commands) as queries to be sent to the LLM. It:
@@ -204,18 +217,133 @@ The function extracts the response content from the API's JSON response, specifi
 
 ```python
 # Application Entry point
-def main():
+async def main():
     """
     Main entry point for the application.
     """
     logger.info("Starting Telebot-OpenWebUI")
-    asyncio.run(bot.polling())
+    try:
+        await bot.polling()
+    except Exception as e:
+        logger.error("Bot polling failed with error: %s", e)
+        raise
 
 if __name__ == "__main__":
-    main()
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        logger.info("Bot stopped by user")
+    except (RuntimeError, asyncio.CancelledError) as e:
+        logger.error("Application crashed: %s", e)
+        exit(1)
 ```
 
-The main function starts the bot using asyncio.run(bot.polling()) which begins polling Telegram for new messages.
+The main function starts the bot using `asyncio.run(bot.polling())` which begins polling Telegram for new messages. It includes proper exception handling for graceful shutdown.
+
+---
+### Testing
+
+The project includes a comprehensive test suite to ensure code quality and reliability.
+
+#### Test Suite Structure
+
+The tests are organized in the `tests/` directory with the following structure:
+
+```markdown
+tests/
+├── test_env_loading.py         # Tests for environment variable loading
+├── test_llm_processing.py      # Tests for LLM processing functions
+└── test_message_handlers.py    # Tests for Telegram message handlers
+```
+
+1. `test_env_loading.py`: Tests environment variable loading and validation, ensuring the application properly handles missing or invalid configuration.
+2. `test_llm_processing.py`: Tests the LLM processing functionality with various scenarios:
+    - Successful responses
+    - Different response formats
+    - HTTP errors
+    - Timeout errors
+    - Connection errors
+    - Invalid JSON responses
+    - Unexpected response formats
+3. `test_message_handlers.py`: Tests the Telegram message handlers:
+    - Welcome message handler
+    - Regular message handler
+    - Error handling in message processing
+
+
+#### Test Runner
+
+A dedicated test runner script (`test_runner.py`) is provided to simplify test execution:
+
+```python
+#!/usr/bin/env python3
+"""Test runner script for local testing."""
+
+import subprocess
+import sys
+import os
+
+
+def run_tests():
+    """Run all tests with pytest."""
+    try:
+        # Use uv to install all dependencies
+        subprocess.run([
+            "uv", "pip", "install", 
+            "pytest>=7.0",
+            "pytest-asyncio>=0.21.0",
+            "pytest-mock>=3.11.1",
+            "requests-mock>=1.11.0",
+            "python-dotenv",
+            "pytelegrambotapi"
+        ], check=True)
+        
+        # Run tests using the virtual environment's Python
+        venv_python = os.path.join(".venv", "Scripts", "python.exe")
+        result = subprocess.run([venv_python, "-m", "pytest", "tests/", "-v"])
+        return result.returncode == 0
+    except subprocess.CalledProcessError as e:
+        print(f"Error running tests: {e}")
+        return False
+    except FileNotFoundError:
+        # Fallback to using python from PATH
+        try:
+            result = subprocess.run(["python", "-m", "pytest", "tests/", "-v"])
+            return result.returncode == 0
+        except subprocess.CalledProcessError as e:
+            print(f"Error running tests: {e}")
+            return False
+
+
+if __name__ == "__main__":
+    success = run_tests()
+    sys.exit(0 if success else 1)
+```
+
+This script:
+
+1. Installs all necessary test dependencies using `uv`
+2. Runs the tests using pytest
+3. Provides proper error handling and exit codes
+
+
+#### Running Tests
+
+Tests can be executed in multiple ways:
+
+1. Using the test runner script:
+
+```bash
+python test_runner.py
+```
+
+2. Directly with pytest (if dependencies are already installed):
+
+```bash
+python -m pytest tests/ -v
+```
+
+All tests should pass to ensure the application functions correctly.
 
 ---
 
