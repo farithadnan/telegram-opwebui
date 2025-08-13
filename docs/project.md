@@ -241,11 +241,11 @@ if __name__ == "__main__":
 The main function starts the bot using `asyncio.run(bot.polling())` which begins polling Telegram for new messages. It includes proper exception handling for graceful shutdown.
 
 ---
-### Testing
+## Testing
 
 The project includes a comprehensive test suite to ensure code quality and reliability.
 
-#### Test Suite Structure
+### Test Suite Structure
 
 The tests are organized in the `tests/` directory with the following structure:
 
@@ -271,7 +271,7 @@ tests/
     - Error handling in message processing
 
 
-#### Test Runner
+### Test Runner
 
 A dedicated test runner script (`test_runner.py`) is provided to simplify test execution:
 
@@ -347,9 +347,9 @@ All tests should pass to ensure the application functions correctly.
 
 ---
 
-### Libraries and Dependencies
+## Libraries and Dependencies
 
-#### Core Libraries
+### Core Libraries
 1. **pyTelegramBotAPI**: An asynchronous Python library for interacting with Telegram's Bot API. It provides:
     - Message handling decorators
     - Methods for sending messages and chat actions
@@ -359,13 +359,61 @@ All tests should pass to ensure the application functions correctly.
 4. **asyncio**: Python's built-in library for writing asynchronous code, essential for handling multiple Telegram conversations concurrently.
 5. **logging**: Python's standard logging module for tracking application behavior and debugging.
 
-#### Development and Deployment Tools
+### Development and Deployment Tools
 
 1. **uv**: A fast Python package installer and resolver used in the Dockerfile for dependency installation.
 2. **Docker**: Containerization platform used for deployment consistency.
 3. **docker-compose**: Tool for defining and running multi-container Docker applications.
 
-### Project Structure
+
+## Project Configuration and Deployment
+
+### Docker Configuration
+
+The project includes Docker support for easy deployment and consistent environments across different systems.
+
+#### Dockerfile
+The `Dockerfile` defines the container image for the application:
+- Uses Python 3.11 as the base image
+- Creates a dedicated user for running the application
+- Uses `uv` as the package manager for faster dependency installation
+- Sets up proper directory structure and permissions
+- Exposes port 8080 for potential web UI (if implemented)
+- Configures the container to run the main application
+
+#### Docker Compose
+The `docker-compose.yml` file provides an easy way to run the application with proper configuration:
+- Uses the locally built image
+- Sets up proper volume mounts for logs and configuration
+- Uses network_mode: "host" for simplified networking
+- Loads environment variables from config/.env file
+
+#### Dev Container Configuration
+The `.devcontainer/devcontainer.json` file enables development in a containerized environment:
+- Uses the same base image as the production Dockerfile
+- Automatically installs development tools like uv
+- Sets up proper user permissions
+- Configures VS Code extensions for Python development
+- Mounts the project directory for live editing
+
+### Python Project Configuration
+
+#### pyproject.toml
+
+The pyproject.toml file contains project metadata and configuration:
+- Project name, version, and description
+- Python version requirement (>=3.11)
+- Dependencies (pyTelegramBotAPI, python-dotenv, requests)
+- Optional test dependencies for development
+- pytest configuration for running tests
+- Project structure definitions
+
+#### Configuration Files
+
+- config/.env: Contains environment variables required for the application
+- logs/: Directory for application logs (git-ignored)
+
+## Project Structure
 
 ```markdown
 telebot-opwebui/
@@ -376,9 +424,19 @@ telebot-opwebui/
 ├── main.py                   # Main application code
 ├── pyproject.toml            # Project metadata and dependencies
 ├── README.md                 # Project documentation
+├── docs/                     # Detailed documentation
+│   └── project.md            # This document
 ├── config/                   # Configuration directory (git-ignored)
 │   └── .env                  # Environment variables
-└── logs/                     # Log directory (git-ignored)
+├── logs/                     # Log directory (git-ignored)
+├── tests/                    # Test suite
+│   ├── test_env_loading.py
+│   ├── test_llm_processing.py
+│   └── test_message_handlers.py
+├── test_runner.py            # Test execution script
+└── .github/                  # GitHub Actions workflows
+    └── workflows/
+        └── ci-cd.yml
 ```
 ---
 
