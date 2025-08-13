@@ -14,6 +14,9 @@ A Telegram bot integrated with OpenWebUI for AI-powered conversations. This proj
     - [Rebuilding Containers](#rebuilding-containers)
     - [Switching Between Environments](#switching-between-environments)
   - [Method 4: Using GitHub Container Registry Image](#method-4-using-github-container-registry-image)
+- [Testing](#testing)
+  - [Running Tests Locally](#running-tests-locally)
+  - [Test Structure](#test-structure)
 - [Project Documentation](#project-documentation)
 
 ## Prerequisites
@@ -240,6 +243,52 @@ docker run -d \
 2. Ensure all required environment variables are provided either through the `--env-file` option or individual `-e` flags
 3. You do not need to clone the repository to use the Docker image - just create your configuration locally.
 4. The `-v ./logs:/app/logs` option will create a logs directory in your current folder to store application logs
+
+---
+
+## Testing
+
+This project includes unit tests to ensure code quality and prevent regressions.
+
+### Running Tests Locally
+
+To run tests locally:
+
+1. Make sure you have the test dependencies installed:
+
+```bash
+uv pip install -e .[test]
+```
+
+2. Run all tests:
+
+```bash
+pytest tests/
+```
+
+3. Run tests with verbose output:
+
+```bash
+pytest tests/ -v
+```
+
+Alternatively, you can use the test runner script:
+
+```bash
+python test_runner.py
+```
+
+### Test Structure
+
+The tests are organized as follows:
+
+- `tests/test_env_loading.py` - Tests for environment variable loading and validation
+- `tests/test_llm_processing.py` - Tests for LLM processing functions
+- `tests/test_message_handlers.py` - Tests for Telegram message handlers
+
+Each test file focuses on a specific aspect of the application functionality.
+
+
 
 ---
 
